@@ -1,0 +1,16 @@
+% We want to investigate whether sketches can be decomposed into shape tokens like how sentences are made up from words. Moreover, we want to know whether we can learn a relationship between word tokens and shape tokens. 
+
+% Relation to Robotics: Language grounding in actions. 
+
+Creative activities start early in our lives. Children express themselves at an early age through drawing. 
+When the child and the robot are sitting together, the robot w
+
+Researchers have been interesting in studying sketches and learning representations for very long. Google collected a large dataset called Quick,Draw! as an interactive platform for users to play and sketch. The seminal work by David Ha explores generating sketches by completing user strokes on a canvas. In this paper, we want to explore the idea of sketching with people, because drawing as an activity is fun, and for robots that are moving closer to our lives, it would be cool if they can participate in creative activities with us. 
+
+There have been a lot of progress in the image generation domain, where companies have developed large-scale text-to-image generative networks, such as DALL-E 2 and Imagen. We also want to develop a system where users can sketch with the robot, but currently there is no datasets with both sketches and language command. We want the robot to be able to sketch with the human, and the robot will be commanded through language. In order to make the session interactive, we need to have data on sketches broken down into parts so that humans and robots can take turn to draw. Currently, there is no datasets available that have all three components: sketches, semantic parts in sketches, and language annotation of the parts. Therefore, we augmented existing Quick,Draw! sketches and their semantic parts with language annotations by asking human annotators to annotate on Amazon Mechanical Turk.
+
+Our main contributions are:
+\begin{enumerate}
+    \item We collected a dataset of sketch parts and language annotation from human annotators so that it reflects how humans might interact with an interactive sketching agent. \item We fine-tuned CLIP on the dataset to obtain a vision-language embedding that is suitable for learning a model to draw sketches. 
+    \item We learned an model that can interactively draw with humans by describing what parts are drawn next. 
+\end{enumerate}

@@ -1,0 +1,18 @@
+% Appendixes should appear before the acknowledgment.
+\subsection{Prepare Data for Training} \label{appendix:prepare_data}
+
+\paragraph{Render Partial Sketches}
+Go down the data-frame, for each entry, we have sketch category, sketch image index, and sketch part type. We need to locate how many parts are before the given part.  
+For each entry, we can compute another quantity called strokes included. We can do this by: .
+For example, entry $i$, it has strokes $i_{j_3}$ to $i_{j_5}$, meaning that it is composed of the 4th stroke to the 6th stroke. We need to render $i_{j_0}$ to $i_{j_2}$. 
+Parameters: $CanvasSize$. Given images of rendered partial sketches: 
+\begin{itemize}
+    \item \texttt{render\_img(strokes, side = $CanvasSize$, original\_side = 256.)}
+    \item \texttt{get\_strokes\_in\_parts(drawing\_raw, parts\_indices, canvas\_size = $CanvasSize$)} and then \texttt{render\_img(strokes, side = $CanvasSize$, original\_side = $CanvasSize$)}
+\end{itemize}
+
+\paragraph{Calculate Convex Hull for Each Semantic Part} 
+If the part is a vertical line, meaning that $x_{min} = x_{max}$, then we sample 30 points on this vertical line and perturb 10 points with Gaussian noise (mean $0$ and std $0.05$) in the x-direction so that the part has length in the x-direction, then we can fit a convex hull using the \texttt{scipy.spatial} package. 
+
+
+The primitives that we consider are: circle with radius 1, semi-circle with radius 1, semi-circle arc with radius 1, angled curve with side length $\sqrt{2}$, square with width 2. 

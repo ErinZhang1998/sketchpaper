@@ -1,0 +1,41 @@
+\subsection{Primitive Fitting}
+For each sketch, we sample 200 points from each part, and if the part contains multiple strokes, then we calculate a convex hull enclosing all the strokes and sample 200 points on the convex hull. There are a few edge cases in terms of calculating the convex hull, and details can be found in Appendix \ref{appendix:prepare_data}. Next, for each part, we estimate the affine transformation parameters to best fit a given primitive. We then obtained $p_i \; i \in [6]$. We can also decompose the transformation into 6 parameters $\theta, s_x,s_y,h_x,t_x,t_y$, where $\theta$ represents the rotation angle; $s_x$ and $s_y$ are scaling in the $x$,$y$ directions, respectively; $h_x$ is amount of shearing in the $x$ direction. $t_x$ and $t_y$ represent translation in the $x$,$y$ directions. 
+
+$
+\begin{bmatrix}
+p_1 & p_2 & p_3\\
+p_4 & p_5 & p_6 \\
+0 & 0 & 1 \\
+\end{bmatrix}
+= 
+\begin{bmatrix}
+0 & 0 & t_x\\
+0 & 0 & t_y\\
+0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+\cos \theta & -\sin \theta & 0\\
+\sin \theta & \cos \theta & 0\\
+0 & 0 & 1 \\
+\end{bmatrix}
+\\
+\hspace{4em}
+\begin{bmatrix}
+s_x & 0 & 0\\
+0 & s_y & 0\\
+0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+1 & h_x & 0\\
+0 & 1 & 0\\
+0 & 0 & 1 \\
+\end{bmatrix}
+$
+
+We used an LSTM that takes in the part description (e.g. \textit{small flat mouth}) and then feed the latent vector at the last timestep $z_{l_{max}}$, where $l_{max}$ is the maximum length of the part description, to three separate linear layers: one for predicting the type of primitive to use, and the other two for predicting the parameters of 6 Gaussian Mixture Model (GMM), one for each transformation parameter. Out of these two linear layers, one predicts the mean and standard deviation of each individual univariate Gaussian in the mixture model, and the other one predicts the weight vectors that are used to combine the individual normal distribution.
+
+
+We assume that there are no correlations among the parameters. 
+
+\section{Conditioning on Drawing History}
+In order for the robot to interactively draw with users, we want to generate the next part conditioned on the previous parts. 
